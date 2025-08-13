@@ -22,9 +22,9 @@ use Illuminate\Support\Str;
 
 class TicketsResource extends Resource
 {
-    protected static ?string $model = Ticket::class;
-
     protected static ?string $navigationGroup = 'Manage Events';
+
+    protected static ?string $model = Ticket::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
     protected static ?int $navigationSort = 3;

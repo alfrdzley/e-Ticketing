@@ -3,9 +3,7 @@
 namespace App\Filament\Widgets;
 
 use Filament\Tables\Columns\TextColumn;
-use Filament\Actions\Action;
 use App\Models\Booking;
-use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 

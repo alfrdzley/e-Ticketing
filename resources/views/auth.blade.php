@@ -38,7 +38,7 @@
                             </svg>
                         </div>
                         
-                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Welcome back, {{ Auth::user()->name }}!</h2>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Welcome back, {{ Auth::user()?->name ?? 'Guest' }}!</h2>
                         <p class="text-gray-600 mb-6">You are already authenticated.</p>
                         
                         <div class="space-y-3">

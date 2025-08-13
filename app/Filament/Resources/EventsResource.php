@@ -9,7 +9,6 @@ use Filament\Forms\Set;
 use App\Filament\Resources\EventsResource\Pages\ListEvents;
 use App\Filament\Resources\EventsResource\Pages\CreateEvents;
 use App\Filament\Resources\EventsResource\Pages\EditEvents;
-use App\Filament\Resources\EventsResource\Pages;
 use App\Models\Event;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -113,30 +112,30 @@ class EventsResource extends Resource
                                     ->relationship('category', 'name')
                                     ->searchable()
                                     ->required()
-                                ->createOptionForm([
-                                    TextInput::make('name')
-                                        ->label('Nama Kategori')
-                                    ->required(),
-                                    TextInput::make('slug')
-                                        ->label('Slug')
-                                        ->unique(Event::class, 'slug', ignoreRecord: true)
-                                        ->required(),
-                                    Textarea::make('description'),
-                                    ColorPicker::make('color')
-                                        ->label('Warna Kategori')
-                                        ->default('#4F46E5')
-                                    ->required(),
-                                    TextInput::make('icon')
-                                        ->label('Ikon (FontAwesome, Heroicons, dll)')
-                                        ->default('heroicon-o-tag')
-                                        ->required(),
-                                    ToggleButtons::make('is_active')
-                                        ->label('Aktif')
-                                        ->options([
-                                            true => 'Ya',
-                                            false => 'Tidak',
-                                        ])
-                                ]),
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->label('Nama Kategori')
+                                            ->required(),
+                                        TextInput::make('slug')
+                                            ->label('Slug')
+                                            ->unique(Event::class, 'slug', ignoreRecord: true)
+                                            ->required(),
+                                        Textarea::make('description'),
+                                        ColorPicker::make('color')
+                                            ->label('Warna Kategori')
+                                            ->default('#4F46E5')
+                                            ->required(),
+                                        TextInput::make('icon')
+                                            ->label('Ikon (FontAwesome, Heroicons, dll)')
+                                            ->default('heroicon-o-tag')
+                                            ->required(),
+                                        ToggleButtons::make('is_active')
+                                            ->label('Aktif')
+                                            ->options([
+                                                true => 'Ya',
+                                                false => 'Tidak',
+                                            ])
+                                    ]),
                                 Select::make('organizer_id')
                                     ->label('Penyelenggara (Organizer)')
                                     ->relationship('organizer', 'name')
@@ -258,18 +257,18 @@ class EventsResource extends Resource
                     ->relationship('category', 'name')
                     ->label('Filter Kategori'),
             ]);
-//            ->actions([
-//                ActionGroup::make([
-//                    Actions\ViewAction::make(),
-//                    Actions\EditAction::make(),
-//                    Actions\DeleteAction::make(),
-//                ]),
-//            ])
-//            ->bulkActions([
-//                Actions\BulkActionGroup::make([
-//                    Actions\DeleteBulkAction::make(),
-//                ]),
-//            ]);
+        //            ->actions([
+        //                ActionGroup::make([
+        //                    Actions\ViewAction::make(),
+        //                    Actions\EditAction::make(),
+        //                    Actions\DeleteAction::make(),
+        //                ]),
+        //            ])
+        //            ->bulkActions([
+        //                Actions\BulkActionGroup::make([
+        //                    Actions\DeleteBulkAction::make(),
+        //                ]),
+        //            ]);
     }
 
     public static function getRelations(): array

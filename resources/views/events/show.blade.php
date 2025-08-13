@@ -361,7 +361,7 @@
                                     <div class="space-y-2">
                                         <label for="name" class="block text-sm font-bold text-gray-700">Nama Lengkap</label>
                                         <input type="text" name="name" id="name" required 
-                                               value="{{ Auth::user()->name }}"
+                                               value="{{ Auth::user()?->name ?? '' }}"
                                                class="w-full rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 py-3 px-4"
                                                placeholder="Masukkan nama lengkap">
                                     </div>
@@ -369,7 +369,7 @@
                                     <div class="space-y-2">
                                         <label for="email" class="block text-sm font-bold text-gray-700">Email</label>
                                         <input type="email" name="email" id="email" required 
-                                               value="{{ Auth::user()->email }}"
+                                               value="{{ Auth::user()?->email ?? '' }}"
                                                class="w-full rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 py-3 px-4"
                                                placeholder="Masukkan email">
                                     </div>

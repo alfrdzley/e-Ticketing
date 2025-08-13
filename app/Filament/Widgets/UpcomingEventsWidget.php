@@ -4,9 +4,7 @@ namespace App\Filament\Widgets;
 
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Actions\Action;
 use App\Models\Event;
-use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
