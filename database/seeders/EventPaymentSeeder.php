@@ -13,7 +13,7 @@ class EventPaymentSeeder extends Seeder
     public function run(): void
     {
         $events = \App\Models\Event::all();
-        
+
         foreach ($events as $event) {
             $event->update([
                 'payment_account_name' => 'Event Organizer Indonesia',

@@ -14,5 +14,3 @@ class EventSeeder extends Seeder
         Event::factory()->count(100)->create();
     }
 }
-
-

@@ -6,6 +6,7 @@ use Filament\Tables\Columns\TextColumn;
 use App\Models\Booking;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Filament\Tables\Action;
 
 class LatestBookingsWidget extends BaseWidget
 {
@@ -62,11 +63,11 @@ class LatestBookingsWidget extends BaseWidget
                     ->label('Booked At')
                     ->dateTime('M j, Y H:i')
                     ->sortable(),
-                ]);
-            // ->actions([
-            //     Action::make('view')
-            //         ->url(fn (Booking $record): string => route('filament.admin.resources.bookings.edit', $record))
-            //         ->icon('heroicon-m-eye'),
-            // ]);
+                ])
+            ->actions([
+                Action::make('view')
+                    ->url(fn (Booking $record): string => route('filament.admin.resources.bookings.edit', $record))
+                    ->icon('heroicon-m-eye'),
+            ]);
     }
 }
