@@ -1,7 +1,3 @@
-{{-- 
-    Enhanced Event Card Component dengan desain modern
-    Menggunakan gradients, shadows, dan micro-interactions
---}}
 @props([
     'event',
     'showActions' => true,
@@ -100,7 +96,7 @@
         
         {{-- Enhanced Event Description --}}
         <p class="text-gray-600 mb-4 line-clamp-3 leading-relaxed text-sm">
-            {{ $event->description }}
+            {!! $event->description !!}
         </p>
         
         {{-- Enhanced Location --}}

@@ -272,7 +272,6 @@
                         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
                             {!! nl2br(e($event->description)) !!}
                         </div>
-                        
                         @if($event->terms_conditions)
                             <div class="mt-8 pt-8 border-t border-gray-200">
                                 <div class="flex items-center gap-3 mb-4">
