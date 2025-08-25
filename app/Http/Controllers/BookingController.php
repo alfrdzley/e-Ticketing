@@ -29,13 +29,6 @@ class BookingController extends Controller
     public function store(Request $request, Event $event)
     {
         $user = Auth::user();
-        Log::info('Booking store method called', [
-            'user_id' => $user->id, 
-            'event_id' => $event->id, 
-            'request_data' => $request->all()
-        ]);
-        
-        Log::info('Event found', ['event_id' => $event->id, 'event_name' => $event->name]);
         
         $validator = Validator::make($request->all(), [
             'quantity' => 'required|integer|min:1|max:5',
@@ -45,21 +38,18 @@ class BookingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Log::warning('Validation failed', ['errors' => $validator->errors()]);
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
 
         if ($event->status !== 'published') {
-            Log::warning('Event not published', ['event_status' => $event->status]);
             return redirect()->back()
                 ->with('error', 'Event ini tidak tersedia untuk booking.')
                 ->withInput();
         }
 
         try {
-            Log::info('Creating booking via service');
             $booking = $this->bookingService->createBooking($event, [
                 'user_id' => $user->id,
                 'quantity' => $request->quantity,
@@ -68,21 +58,16 @@ class BookingController extends Controller
                 'booker_phone' => $request->phone,
             ]);
 
-            Log::info('Booking created successfully', ['booking_id' => $booking->id, 'status' => $booking->status]);
 
             if ($booking->status === 'paid') {
                 // Free event - redirect to ticket page directly
-                Log::info('Free event booking - redirecting to ticket');
                 return redirect()->route('tickets.show', $booking)
                     ->with('success', 'Booking berhasil dikonfirmasi! Tiket digital Anda sudah siap.');
             } else {
-                // Paid event - redirect to payment page
-                Log::info('Paid event booking - redirecting to payment');
                 return redirect()->route('bookings.payment', $booking)
                     ->with('success', 'Booking berhasil dibuat! Silakan lakukan pembayaran dalam 24 jam untuk mengkonfirmasi tiket Anda.');
             }
         } catch (Exception $e) {
-            Log::error('Booking creation failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return redirect()->back()
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
                 ->withInput();
@@ -94,7 +79,6 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        // Ensure user can only view their own bookings
         if ($booking->user_id !== Auth::user()->id) {
             abort(403, 'Unauthorized access to booking.');
         }
@@ -107,7 +91,6 @@ class BookingController extends Controller
      */
     public function payment(Booking $booking)
     {
-        // Ensure user can only view their own bookings
         if ($booking->user_id !== Auth::user()->id) {
             abort(403, 'Unauthorized access to booking.');
         }
@@ -123,9 +106,7 @@ class BookingController extends Controller
         $paymentQRPath = null;
         if ($event->payment_account_number) {
             try {
-                Log::info('Generating payment QR code for booking', ['booking_id' => $booking->id]);
                 $paymentQRPath = $this->qrService->generateBookingPaymentQR($booking);
-                Log::info('Payment QR code generated successfully', ['path' => $paymentQRPath]);
             } catch (Exception $e) {
                 Log::error('Failed to generate payment QR code', ['error' => $e->getMessage()]);
                 // Continue without QR code

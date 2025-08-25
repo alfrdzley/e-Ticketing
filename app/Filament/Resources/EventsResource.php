@@ -256,19 +256,19 @@ class EventsResource extends Resource
                 SelectFilter::make('category')
                     ->relationship('category', 'name')
                     ->label('Filter Kategori'),
+            ])
+            ->actions([
+                \Filament\Tables\Actions\ActionGroup::make([
+                    \Filament\Tables\Actions\ViewAction::make(),
+                    \Filament\Tables\Actions\EditAction::make(),
+                    \Filament\Tables\Actions\DeleteAction::make(),
+                ]),
+            ])
+            ->bulkActions([
+                \Filament\Tables\Actions\BulkActionGroup::make([
+                    \Filament\Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
-        //            ->actions([
-        //                ActionGroup::make([
-        //                    Actions\ViewAction::make(),
-        //                    Actions\EditAction::make(),
-        //                    Actions\DeleteAction::make(),
-        //                ]),
-        //            ])
-        //            ->bulkActions([
-        //                Actions\BulkActionGroup::make([
-        //                    Actions\DeleteBulkAction::make(),
-        //                ]),
-        //            ]);
     }
 
     public static function getRelations(): array
@@ -283,6 +283,10 @@ class EventsResource extends Resource
         return parent::getEloquentQuery()->withSum('bookings as bookings_sum_quantity', 'quantity');
     }
 
+    public static function getRecordRouteKeyName(): string
+    {
+        return 'ulid';
+    }
 
     public static function getPages(): array
     {

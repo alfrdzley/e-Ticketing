@@ -96,7 +96,14 @@
         
         {{-- Enhanced Event Description --}}
         <p class="text-gray-600 mb-4 line-clamp-3 leading-relaxed text-sm">
-            {!! $event->description !!}
+            @php
+                $cleanDescription = strip_tags($event->description);
+                $words = str_word_count($cleanDescription, 1);
+                $limitedDescription = count($words) > 25 
+                    ? implode(' ', array_slice($words, 0, 25)) . '...' 
+                    : $cleanDescription;
+            @endphp
+            {{ $limitedDescription }}
         </p>
         
         {{-- Enhanced Location --}}

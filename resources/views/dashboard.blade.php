@@ -1,8 +1,5 @@
 <x-app-layout>
     <x-slot name="header">
-        {{-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Welcome {{ Auth::user()?->name ?? 'Guest' }}!
-        </h2> --}}
         <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             {{-- Error Message --}}
@@ -208,91 +205,6 @@
                     </div>
                 </div>
 
-                {{-- Analytics Widgets --}}
-                {{-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 overflow-hidden shadow-xl rounded-xl">
-                        <div class="p-6 text-white">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="w-8 h-8 bg-white bg-opacity-30 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="ml-5 w-0 flex-1">
-                                    <dl>
-                                        <dt class="text-sm font-medium text-indigo-100 truncate">Average Booking</dt>
-                                        <dd class="text-lg font-semibold text-white">
-                                            @if($stats['total_bookings'] > 0)
-                                                Rp
-                                                {{ number_format($stats['total_spent'] / $stats['total_bookings'], 0, ',', '.') }}
-                                            @else
-                                                Rp 0
-                                            @endif
-                                        </dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
-                    {{-- Success Rate --}}
-                    {{-- <div class="bg-gradient-to-br from-green-500 to-emerald-600 overflow-hidden shadow-xl rounded-xl">
-                        <div class="p-6 text-white">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="w-8 h-8 bg-white bg-opacity-30 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="ml-5 w-0 flex-1">
-                                    <dl>
-                                        <dt class="text-sm font-medium text-green-100 truncate">Success Rate</dt>
-                                        <dd class="text-lg font-semibold text-white">
-                                            @if($stats['total_bookings'] > 0)
-                                                {{ round(($stats['confirmed_bookings'] / $stats['total_bookings']) * 100, 1) }}%
-                                            @else
-                                                0%
-                                            @endif
-                                        </dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
-                    {{-- This Month Activity --}}
-                    {{-- <div class="bg-gradient-to-br from-orange-500 to-red-600 overflow-hidden shadow-xl rounded-xl">
-                        <div class="p-6 text-white">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="w-8 h-8 bg-white bg-opacity-30 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="ml-5 w-0 flex-1">
-                                    <dl>
-                                        <dt class="text-sm font-medium text-orange-100 truncate">This Month</dt>
-                                        <dd class="text-lg font-semibold text-white">
-                                            {{ $user->bookings()->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count() }}
-                                            Events
-                                        </dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
                 {{-- Recent Bookings --}}
                 <div class="bg-white overflow-hidden shadow-xl rounded-xl">
                     <div class="p-6">
@@ -446,9 +358,9 @@
                             {{ $stats['cancelled_bookings'] }}
                         ],
                         backgroundColor: [
-                            '#10B981', // Green for confirmed
-                            '#F59E0B', // Yellow for pending  
-                            '#EF4444'  // Red for cancelled
+                            '#10B981', 
+                            '#F59E0B', 
+                            '#EF4444'  
                         ],
                         borderColor: [
                             '#059669',
@@ -591,11 +503,4 @@
         @endif
     </script>
     </x-slot>
-
-    
-
-    {{-- Chart.js CDN --}}
-
-    {{-- Dashboard Charts Scripts --}}
-    
 </x-app-layout>

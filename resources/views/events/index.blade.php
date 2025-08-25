@@ -47,22 +47,13 @@
                     </p>
 
                     {{-- Enhanced Quick Stats --}}
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 animate-fade-in-up animation-delay-1200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 animate-fade-in-up animation-delay-1200 max-w-2xl mx-auto">
                         <div
                             class="group bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl">
                             <div class="text-5xl font-black mb-3 text-yellow-400">{{ count($events) }}</div>
                             <div class="text-sm opacity-75 uppercase tracking-widest font-semibold">Event Tersedia</div>
                             <div
                                 class="w-full h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300">
-                            </div>
-                        </div>
-                        <div
-                            class="group bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-                            <div class="text-5xl font-black mb-3 text-green-400">
-                                {{ collect($events)->where('price', 0)->count() }}</div>
-                            <div class="text-sm opacity-75 uppercase tracking-widest font-semibold">Event Gratis</div>
-                            <div
-                                class="w-full h-1 bg-gradient-to-r from-green-400 to-blue-500 rounded-full mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300">
                             </div>
                         </div>
                         <div

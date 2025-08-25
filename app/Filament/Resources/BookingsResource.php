@@ -101,33 +101,34 @@ class BookingsResource extends Resource
                                 $quantity = $get('quantity') ?: 1;
                                 $price = $get('price') ?: 0;
                                 $set('total_amount', $quantity * $price);
-                                $set('final_amount', $quantity * $price); // Without discount for now
-                            }),
-
-                        TextInput::make('price')
-                            ->label('Harga per Tiket')
-                            ->numeric()
-                            ->prefix('Rp')
-                            ->disabled()
-                            ->reactive()
-                            ->afterStateUpdated(function (callable $set, callable $get) {
-                                $quantity = $get('quantity') ?: 1;
-                                $price = $get('price') ?: 0;
-                                $set('total_amount', $quantity * $price);
                                 $set('final_amount', $quantity * $price);
                             }),
+
+                        // TextInput::make('price')
+                        //     ->label('Harga per Tiket')
+                        //     ->numeric()
+                        //     ->prefix('Rp')
+                        //     ->dehydrated(true) // Ensure the value is saved
+                        //     ->reactive()
+                        //     ->afterStateUpdated(function (callable $set, callable $get) {
+                        //         $quantity = $get('quantity') ?: 1;
+                        //         $price = $get('price') ?: 0;
+                        //         $set('total_amount', $quantity * $price);
+                        //         $set('final_amount', $quantity * $price);
+                        //     }),
 
                         TextInput::make('total_amount')
                             ->label('Total Amount')
                             ->numeric()
                             ->prefix('Rp')
-                            ->disabled(),
+                            ->disabled()
+                            ->dehydrated(false),
 
-                        TextInput::make('final_amount')
-                            ->label('Final Amount')
-                            ->numeric()
-                            ->prefix('Rp')
-                            ->required(),
+                        // TextInput::make('final_amount')
+                        //     ->label('Final Amount')
+                        //     ->numeric()
+                        //     ->prefix('Rp')
+                        //     ->required(),
 
                         Select::make('status')
                             ->label('Status')

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,6 +24,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'phone',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -48,6 +47,7 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
     }
 
@@ -58,6 +58,17 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel($panel): bool
     {
-        return str_ends_with($this->email, '@admin.com');
+        // Allow access if user is admin or has super_admin role
+        return $this->is_admin || $this->hasRole('super_admin') || str_ends_with($this->email, '@admin.com');
+    }
+    
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->hasRole('super_admin');
     }
 }

@@ -270,7 +270,7 @@
                         </div>
                         
                         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                            {!! nl2br(e($event->description)) !!}
+                            {!! $event->description !!}
                         </div>
                         @if($event->terms_conditions)
                             <div class="mt-8 pt-8 border-t border-gray-200">
@@ -283,7 +283,7 @@
                                     <h3 class="text-xl font-bold text-gray-900">Syarat & Ketentuan</h3>
                                 </div>
                                 <div class="text-gray-600 bg-gray-50 rounded-xl p-6 border border-gray-200">
-                                    {!! nl2br(e($event->terms_conditions)) !!}
+                                    {!! $event->terms_conditions !!}
                                 </div>
                             </div>
                         @endif
