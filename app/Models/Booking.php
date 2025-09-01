@@ -60,6 +60,12 @@ class Booking extends Model
     {
         return $this->hasMany(PaymentLog::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'booking_id', 'ulid');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
