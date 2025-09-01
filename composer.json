@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6",
         "luvi-ui/laravel-luvi": "^0.6.0",
+        "midtrans/midtrans-php": "^2.6",
         "predis/predis": "^3.2"
     },
     "require-dev": {

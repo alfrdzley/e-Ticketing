@@ -26,40 +26,35 @@ class UpcomingEventsWidget extends BaseWidget
                     ->limit(10)
             )
             ->columns([
-                ImageColumn::make('featured_image')
-                    ->label('Image')
-                    ->circular()
-                    ->defaultImageUrl(url('/images/default-event.png')),
-                
                 TextColumn::make('name')
                     ->label('Event Name')
                     ->searchable()
                     ->weight('bold'),
-                
+
                 TextColumn::make('start_date')
                     ->label('Date & Time')
                     ->dateTime('M j, Y \a\t H:i')
                     ->sortable(),
-                
+
                 TextColumn::make('location')
                     ->label('Location')
                     ->limit(30),
-                
+
                 TextColumn::make('price')
                     ->label('Price')
                     ->money('IDR')
                     ->sortable(),
-                
+
                 TextColumn::make('quota')
                     ->label('Quota')
                     ->badge()
                     ->color('primary'),
-                
+
                 TextColumn::make('bookings_count')
                     ->label('Booked')
                     ->badge()
                     ->color(fn ($record) => $record->bookings_count >= $record->quota * 0.8 ? 'danger' : 'success'),
-                
+
                 TextColumn::make('availability')
                     ->label('Availability')
                     ->state(function ($record) {
@@ -74,10 +69,5 @@ class UpcomingEventsWidget extends BaseWidget
                         return 'success';
                     }),
                 ]);
-            // ->recordActions([
-            //     Action::make('view')
-            //         ->url(fn (Event $record): string => route('filament.admin.resources.events.edit', $record))
-            //         ->icon('heroicon-m-eye'),
-            // ]);
     }
 }

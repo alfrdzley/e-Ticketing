@@ -11,7 +11,6 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasRoles;
 
     /**
@@ -61,7 +60,7 @@ class User extends Authenticatable implements FilamentUser
         // Allow access if user is admin or has super_admin role
         return $this->is_admin || $this->hasRole('super_admin') || str_ends_with($this->email, '@admin.com');
     }
-    
+
     public function isAdmin()
     {
         return $this->is_admin;

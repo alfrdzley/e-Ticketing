@@ -23,14 +23,14 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
-    /**
+    /**`
      * Display the specified event with full details
      */
     public function show(Event $event)
     {
-        $event = Cache::remember("events.show.{$event->id}", 600, function () use ($event) {
-            return $event->load('details');
-        });
+        // $event = Cache::remember("events.show.{$event->id}", 600, function () use ($event) {
+        //     return $event->load('details');
+        // });
 
         return view('events.show', compact('event'));
     }

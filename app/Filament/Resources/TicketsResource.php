@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\TicketsResource\Pages\CreateTickets;
+use App\Filament\Resources\TicketsResource\Pages\EditTickets;
+use App\Filament\Resources\TicketsResource\Pages\ListTickets;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -9,9 +12,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Get;
-use App\Filament\Resources\TicketsResource\Pages\ListTickets;
-use App\Filament\Resources\TicketsResource\Pages\CreateTickets;
-use App\Filament\Resources\TicketsResource\Pages\EditTickets;
 use App\Models\Ticket;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
@@ -25,6 +25,8 @@ class TicketsResource extends Resource
     protected static ?string $navigationGroup = 'Manage Events';
 
     protected static ?string $model = Ticket::class;
+
+    protected static bool $shouldRegisterNavigation = true;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
     protected static ?int $navigationSort = 3;
@@ -140,7 +142,7 @@ class TicketsResource extends Resource
         return [
             'index' => ListTickets::route('/'),
             'create' => CreateTickets::route('/create'),
-            'edit' => EditTickets::route('/{record}/edit'),
+//            'edit' => EditTickets::route('/{record}/edit'),
         ];
     }
 }

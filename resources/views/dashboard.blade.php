@@ -21,6 +21,7 @@
                         </div>
                     </div>
                 </div>
+                
             @endif
 
             {{-- Check if required variables exist --}}
@@ -178,6 +179,7 @@
                                 class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition duration-150 ease-in-out">
                                 ⚙️ Edit Profile
                             </a>
+                            
                         </div>
                     </div>
                 </div>
@@ -397,7 +399,7 @@
             });
         }
 
-        // Monthly Booking Trend Line Chart
+                // Monthly Booking Trend Line Chart
         const trendCtx = document.getElementById('monthlyTrendChart');
         if (trendCtx) {
             // Generate last 6 months data
