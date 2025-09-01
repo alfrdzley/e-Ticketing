@@ -161,13 +161,32 @@
                     @if($booking->status === 'pending')
                         {{-- Payment Actions --}}
                         @if($booking->final_amount > 0)
-                            <a href="{{ route('bookings.payment', $booking) }}" 
-                               class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 flex items-center justify-center mb-4">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                                </svg>
-                                Lakukan Pembayaran
-                            </a>
+                            {{-- Quick Payment with Midtrans --}}
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <button id="pay-button-quick" 
+                                        class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 flex items-center justify-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                    Bayar Sekarang
+                                </button>
+                                
+                                <a href="{{ route('bookings.payment', $booking) }}" 
+                                   class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold py-3 px-6 rounded-xl transition duration-300 flex items-center justify-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                    </svg>
+                                    Opsi Pembayaran Lain
+                                </a>
+                            </div>
+                            
+                            <div class="text-center mb-4">
+                                <p class="text-sm text-gray-600">
+                                    💳 <strong>Bayar Sekarang:</strong> Credit Card, E-Wallet, Bank Transfer instan
+                                    <br>
+                                    🏦 <strong>Opsi Lain:</strong> Manual transfer + upload bukti
+                                </p>
+                            </div>
                         @endif
 
                         {{-- Upload Payment Proof --}}
@@ -259,4 +278,156 @@
         </div>
     </div>
 </div>
+
+{{-- Midtrans Snap Script --}}
+@if($booking->status === 'pending' && $booking->final_amount > 0)
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+
+<script>
+// Midtrans payment function for quick payment
+document.getElementById('pay-button-quick')?.addEventListener('click', function (event) {
+    event.preventDefault();
+    
+    // Show loading state
+    const button = event.target;
+    const originalText = button.innerHTML;
+    button.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Processing...
+    `;
+    button.disabled = true;
+
+    // Request payment token
+    fetch('{{ route("payments.checkout", $booking) }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Reset button
+        button.innerHTML = originalText;
+        button.disabled = false;
+
+        if (data.success && data.snap_token) {
+            // Launch Midtrans popup
+            snap.pay(data.snap_token, {
+                onSuccess: function(result) {
+                    // Payment success
+                    console.log('Payment success:', result);
+                    showNotification('Payment successful! Checking status...', 'success');
+                    
+                    // Start polling for status update instead of immediate reload
+                    pollPaymentStatus();
+                },
+                onPending: function(result) {
+                    // Payment pending
+                    console.log('Payment pending:', result);
+                    showNotification('Payment is being processed. Checking status...', 'info');
+                    
+                    // Start polling for status update
+                    pollPaymentStatus();
+                },
+                onError: function(result) {
+                    // Payment error
+                    console.log('Payment error:', result);
+                    showNotification('Payment failed. Please try again.', 'error');
+                },
+                onClose: function() {
+                    // Payment popup closed
+                    console.log('Payment popup closed');
+                    showNotification('Payment cancelled.', 'warning');
+                }
+            });
+        } else {
+            console.error('Payment token error:', data);
+            showNotification(data.message || 'Failed to process payment. Please try again.', 'error');
+        }
+    })
+    .catch(error => {
+        // Reset button
+        button.innerHTML = originalText;
+        button.disabled = false;
+        
+        console.error('Error:', error);
+        showNotification('Connection error. Please try again.', 'error');
+    });
+});
+
+// Poll payment status until it's updated
+function pollPaymentStatus(maxAttempts = 10, interval = 3000) {
+    let attempts = 0;
+    
+    const pollInterval = setInterval(() => {
+        attempts++;
+        
+        fetch('{{ route("bookings.status-check", $booking) }}', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Status check attempt', attempts, ':', data);
+            
+            if (data.is_paid) {
+                clearInterval(pollInterval);
+                showNotification('Payment confirmed! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else if (attempts >= maxAttempts) {
+                clearInterval(pollInterval);
+                showNotification('Status check timeout. Please refresh the page manually.', 'warning');
+            }
+        })
+        .catch(error => {
+            console.error('Status check error:', error);
+            if (attempts >= maxAttempts) {
+                clearInterval(pollInterval);
+                showNotification('Failed to check status. Please refresh the page.', 'error');
+            }
+        });
+    }, interval);
+}
+
+// Show notification function
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    const bgColor = {
+        'success': 'bg-green-500',
+        'error': 'bg-red-500',
+        'warning': 'bg-yellow-500',
+        'info': 'bg-blue-500'
+    }[type] || 'bg-blue-500';
+    
+    notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 max-w-sm`;
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <div class="flex-1">${message}</div>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-2 text-white hover:text-gray-200">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.remove();
+        }
+    }, 5000);
+}
+</script>
+@endif
 @endsection

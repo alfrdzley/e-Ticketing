@@ -33,6 +33,8 @@ class EventsResource extends Resource
 
     protected static ?string $model = Event::class;
 
+    protected static bool $shouldRegisterNavigation = true;
+
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
 
@@ -205,11 +207,6 @@ class EventsResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('banner_image_url')
-                    ->label('Banner')
-                    ->size(60)
-                    ->circular(),
-
                 TextColumn::make('name')
                     ->label('Nama Event & Lokasi')
                     ->description(fn(Event $record): string => $record->location)

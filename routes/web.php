@@ -21,6 +21,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/events', 301);
 
+// Midtrans payment routes (public endpoints)
+Route::prefix('payment')->name('payment.')->group(function () {
+    Route::post('/notification', [PaymentController::class, 'notification'])->name('notification');
+    Route::get('/finish', [PaymentController::class, 'finish'])->name('finish');
+    Route::get('/unfinish', [PaymentController::class, 'unfinish'])->name('unfinish');
+    Route::get('/error', [PaymentController::class, 'error'])->name('error');
+});
+
+// Legacy checkout endpoint for backward compatibility
+Route::post('/checkout', [PaymentController::class, 'legacyCheckout']);
+
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{event:ulid}', [EventController::class, 'show'])->name('events.show');
 
@@ -40,14 +51,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{booking:ulid}/payment', [BookingController::class, 'payment'])->name('payment');
         Route::post('/{booking:ulid}/upload-proof', [BookingController::class, 'uploadProof'])->name('upload-proof');
         Route::post('/{booking:ulid}/confirm', [BookingController::class, 'confirm'])->name('confirm');
+        Route::get('/{booking:ulid}/status-check', [BookingController::class, 'statusCheck'])->name('status-check');
     });
 
     // Payment routes
     Route::prefix('payments')->name('payments.')->group(function () {
-        Route::get('/{booking:ulid}/instructions', [PaymentController::class, 'instructions'])->name('instructions');
-        Route::post('/{booking:ulid}/upload-proof', [PaymentController::class, 'uploadProof'])->name('upload-proof');
-        Route::post('/{booking:ulid}/verify', [PaymentController::class, 'verify'])->name('verify');
-        Route::post('/events/{event:ulid}/generate-qr', [PaymentController::class, 'generateQR'])->name('generate-qr');
+        Route::post('/{booking:ulid}/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+        Route::get('/{transaction:ulid}/status', [PaymentController::class, 'status'])->name('status');
+//        Route::get('/{booking:ulid}/instructions', [PaymentController::class, 'instructions'])->name('instructions');
+//        Route::post('/{booking:ulid}/upload-proof', [PaymentController::class, 'uploadProof'])->name('upload-proof');
+//        Route::post('/{booking:ulid}/verify', [PaymentController::class, 'verify'])->name('verify');
+//        Route::post('/events/{event:ulid}/generate-qr', [PaymentController::class, 'generateQR'])->name('generate-qr');
     });
 
     // Ticket routes (require authentication)
@@ -92,3 +106,8 @@ Route::fallback(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+// Include test routes in development
+if (app()->environment(['local', 'testing'])) {
+    require __DIR__ . '/test.php';
+}
