@@ -3,9 +3,10 @@
 @section('title', 'Payment Instructions')
 
 @section('content')
+<!--suppress ALL -->
 <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {{-- Header --}}
         <div class="text-center mb-8">
             <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
@@ -31,7 +32,7 @@
         @endif
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
+
             {{-- Payment Information --}}
             <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
                 <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
@@ -150,7 +151,7 @@
                         </div>
                     </div>
 
-                    <button id="pay-button" 
+                    <button id="pay-button"
                             class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition duration-300 flex items-center justify-center text-lg shadow-lg">
                         <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -190,7 +191,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     {{-- Manual Transfer Details (collapsed by default) --}}
                     <div id="manual-transfer" class="hidden">
                         <div class="space-y-3">
@@ -202,7 +203,7 @@
                                 <span class="text-gray-600">Account Number:</span>
                                 <div class="flex items-center">
                                     <span class="font-mono font-bold mr-2">{{ $event->payment_account_number }}</span>
-                                    <button onclick="copyToClipboard('{{ $event->payment_account_number }}')" 
+                                    <button onclick="copyToClipboard('{{ $event->payment_account_number }}')"
                                             class="text-blue-600 hover:text-blue-800">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -218,7 +219,7 @@
                                 <span class="text-gray-600">Amount:</span>
                                 <div class="flex items-center">
                                     <span class="font-mono font-bold text-purple-600 mr-2">Rp {{ number_format($booking->final_amount, 0, ',', '.') }}</span>
-                                    <button onclick="copyToClipboard('{{ $booking->final_amount }}')" 
+                                    <button onclick="copyToClipboard('{{ $booking->final_amount }}')"
                                             class="text-blue-600 hover:text-blue-800">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -234,8 +235,8 @@
                             <h4 class="font-semibold text-gray-900 mb-3">QR Code untuk Transfer</h4>
                             <div class="inline-block p-4 bg-white border-2 border-gray-200 rounded-xl shadow-sm">
                                 @if(str_ends_with($paymentQRPath, '.png'))
-                                    <img src="{{ asset('storage/' . $paymentQRPath) }}" 
-                                         alt="Payment QR Code" 
+                                    <img src="{{ asset('storage/' . $paymentQRPath) }}"
+                                         alt="Payment QR Code"
                                          class="w-48 h-48 object-contain"
                                          style="image-rendering: pixelated;">
                                 @elseif(str_ends_with($paymentQRPath, '.html'))
@@ -244,7 +245,7 @@
                                             <p class="text-gray-700 font-bold mb-2">QR Code Data</p>
                                             <p class="text-xs text-gray-600 mb-2">{{ $event->payment_bank_name ?? 'Bank Transfer' }}</p>
                                             <p class="text-xs text-gray-600 mb-2">{{ $booking->booking_code }}</p>
-                                            <a href="{{ asset('storage/' . $paymentQRPath) }}" target="_blank" 
+                                            <a href="{{ asset('storage/' . $paymentQRPath) }}" target="_blank"
                                                class="text-blue-600 text-xs underline">View Details</a>
                                         </div>
                                     </div>
@@ -265,7 +266,7 @@
                         @endif
                     </div>
 
-                    <button onclick="toggleManualTransfer()" 
+                    <button onclick="toggleManualTransfer()"
                             class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
                         <span id="toggle-text">Lihat Opsi Transfer Manual</span>
                         <svg id="toggle-icon" class="w-4 h-4 ml-2 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,7 +290,7 @@
                         <li>3. Upload payment proof below</li>
                         <li>4. Wait for confirmation (usually within 1-2 hours)</li>
                     </ol>
-                    
+
                     @if($event->payment_instructions)
                     <div class="mt-4 pt-4 border-t border-blue-200">
                         <p class="text-sm text-blue-800">
@@ -321,7 +322,7 @@
                             <textarea name="notes" rows="3" placeholder="Any additional notes..."
                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
                         </div>
-                        <button type="submit" 
+                        <button type="submit"
                                 class="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 flex items-center justify-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -335,7 +336,7 @@
 
         {{-- Back to Booking --}}
         <div class="text-center mt-8">
-            <a href="{{ route('bookings.show', $booking) }}" 
+            <a href="{{ route('bookings.show', $booking) }}"
                class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-700 hover:bg-gray-50 font-medium transition duration-300">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -358,7 +359,7 @@ function copyToClipboard(text) {
         notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
         notification.textContent = 'Copied to clipboard!';
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             document.body.removeChild(notification);
         }, 2000);
@@ -370,7 +371,7 @@ function toggleManualTransfer() {
     const section = document.getElementById('manual-transfer');
     const toggleText = document.getElementById('toggle-text');
     const toggleIcon = document.getElementById('toggle-icon');
-    
+
     if (section.classList.contains('hidden')) {
         section.classList.remove('hidden');
         toggleText.textContent = 'Sembunyikan Transfer Manual';
@@ -385,7 +386,7 @@ function toggleManualTransfer() {
 // Midtrans payment function
 document.getElementById('pay-button').addEventListener('click', function (event) {
     event.preventDefault();
-    
+
     // Show loading state
     const button = event.target;
     const originalText = button.innerHTML;
@@ -419,7 +420,7 @@ document.getElementById('pay-button').addEventListener('click', function (event)
                     // Payment success
                     console.log('Payment success:', result);
                     showNotification('Payment successful! Redirecting...', 'success');
-                    
+
                     // Redirect to success page after a short delay
                     setTimeout(() => {
                         window.location.href = '{{ route("bookings.show", $booking) }}';
@@ -429,7 +430,7 @@ document.getElementById('pay-button').addEventListener('click', function (event)
                     // Payment pending
                     console.log('Payment pending:', result);
                     showNotification('Payment is being processed. Please check your payment status.', 'info');
-                    
+
                     // Redirect to booking page
                     setTimeout(() => {
                         window.location.href = '{{ route("bookings.show", $booking) }}';
@@ -455,7 +456,7 @@ document.getElementById('pay-button').addEventListener('click', function (event)
         // Reset button
         button.innerHTML = originalText;
         button.disabled = false;
-        
+
         console.error('Error:', error);
         showNotification('Connection error. Please try again.', 'error');
     });
@@ -470,7 +471,7 @@ function showNotification(message, type = 'info') {
         'warning': 'bg-yellow-500',
         'info': 'bg-blue-500'
     }[type] || 'bg-blue-500';
-    
+
     notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 max-w-sm`;
     notification.innerHTML = `
         <div class="flex items-center">
@@ -483,7 +484,7 @@ function showNotification(message, type = 'info') {
         </div>
     `;
     document.body.appendChild(notification);
-    
+
     // Auto remove after 5 seconds
     setTimeout(() => {
         if (notification.parentElement) {
@@ -508,7 +509,7 @@ function updateCountdown() {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    document.getElementById('countdown').textContent = 
+    document.getElementById('countdown').textContent =
         `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 

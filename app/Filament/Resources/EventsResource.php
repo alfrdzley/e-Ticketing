@@ -19,8 +19,6 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\Resource;
-use Filament\Tables\Columns\BadgeColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -66,38 +64,12 @@ class EventsResource extends Resource
                                     ->image()
                                     ->imageEditor()
                                     ->columnSpan('full'),
-                            ])->columns(2),
-
-                        Section::make('Kebijakan & Kontak')
-                            ->schema([
-                                RichEditor::make('terms_conditions')
-                                    ->label('Syarat & Ketentuan'),
-                                RichEditor::make('refund_policy')
-                                    ->label('Kebijakan Refund'),
-                                TextInput::make('contact_email')
-                                    ->label('Email Kontak')
-                                    ->email(),
-                                TextInput::make('contact_phone')
-                                    ->label('Telepon Kontak')
-                                    ->tel(),
-                            ])->columns(2),
-                    ])
-                    ->columnSpan(['lg' => 2]),
-
-                Group::make()
-                    ->schema([
-                        Section::make('Status & Jadwal')
-                            ->schema([
-                                ToggleButtons::make('status')
-                                    ->options([
-                                        'draft' => 'Draft',
-                                        'published' => 'Published',
-                                        'cancelled' => 'Cancelled',
-                                        'completed' => 'Completed',
-                                    ])
-                                    ->default('draft')
-                                    ->inline()
+                                TextInput::make('location')
+                                    ->label('Nama Lokasi (Gedung, Tempat, dll)')
                                     ->required(),
+                                Textarea::make('address')
+                                    ->label('Alamat Lengkap'),
+
                                 DateTimePicker::make('start_date')
                                     ->label('Tanggal Mulai')
                                     ->required(),
@@ -105,8 +77,23 @@ class EventsResource extends Resource
                                     ->label('Tanggal Selesai')
                                     ->required()
                                     ->after('start_date'),
+                                TextInput::make('price')
+                                    ->label('Harga')
+                                    ->numeric()
+                                    ->prefix('Rp')
+                                    ->required(),
+                                TextInput::make('quota')
+                                    ->label('Kuota')
+                                    ->numeric()
+                                    ->required(),
                             ]),
-
+                    ])
+                    ->columnSpan(['lg' => 2]),
+                Group::make()
+                    ->schema([
+//                        Section::make('Status & Jadwal')
+//                            ->schema([
+//                            ]),
                         Section::make('Kategori & Penyelenggara')
                             ->schema([
                                 Select::make('category_id')
@@ -136,6 +123,7 @@ class EventsResource extends Resource
                                             ->options([
                                                 true => 'Ya',
                                                 false => 'Tidak',
+
                                             ])
                                     ]),
                                 Select::make('organizer_id')
@@ -167,36 +155,17 @@ class EventsResource extends Resource
                                                 true => 'Ya',
                                                 false => 'Tidak',
                                             ])->default(true),
+                                    ]),
+                                ToggleButtons::make('status')
+                                    ->options([
+                                        'draft' => 'Draft',
+                                        'published' => 'Published',
+                                        'cancelled' => 'Cancelled',
+                                        'completed' => 'Completed',
                                     ])
-                            ]),
-
-                        Section::make('Lokasi')
-                            ->schema([
-                                TextInput::make('location')
-                                    ->label('Nama Lokasi (Gedung, Tempat, dll)')
+                                    ->default('draft')
+                                    ->inline()
                                     ->required(),
-                                Textarea::make('address')
-                                    ->label('Alamat Lengkap'),
-                            ]),
-
-                        Section::make('Harga & Kuota')
-                            ->schema([
-                                TextInput::make('price')
-                                    ->label('Harga')
-                                    ->numeric()
-                                    ->prefix('Rp')
-                                    ->required(),
-                                TextInput::make('quota')
-                                    ->label('Kuota')
-                                    ->numeric()
-                                    ->required(),
-                            ]),
-                        Section::make('SEO')
-                            ->schema([
-                                TextInput::make('meta_title')
-                                    ->label('Meta Title'),
-                                Textarea::make('meta_description')
-                                    ->label('Meta Description'),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),
@@ -213,15 +182,7 @@ class EventsResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                BadgeColumn::make('status')
-                    ->label('Status')
-                    ->colors([
-                        'primary' => 'draft',
-                        'success' => 'published',
-                        'danger' => 'cancelled',
-                        'warning' => 'completed',
-                    ])
-                    ->searchable(),
+
                 TextColumn::make('price')
                     ->label('Harga')
                     ->money('IDR')

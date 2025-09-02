@@ -6,6 +6,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,6 +76,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/events/{event:ulid}/book', [BookingController::class, 'store'])->name('events.book');
 });
+
+Route::get('/api/user/{id}', function (string $id) {
+    return new UserResource(User::findOrFail($id));
+});
+Route::get('/api/event', function (){
+   return new \App\Http\Resources\EventResource(\App\Models\Event::find(1));
+});
+
+
 
 Route::post('/tickets/validate', [TicketController::class, 'validateTicket'])->name('tickets.validate');
 
