@@ -30,7 +30,7 @@ class TicketController extends Controller
         if ($booking->user_id !== Auth::user()->id) {
             abort(403, 'Unauthorized access to ticket.');
         }
-        
+
         if (!in_array($booking->status, ['paid', 'confirmed', 'completed'])) {
             abort(404, 'Ticket not found or not yet confirmed.');
         }
@@ -43,11 +43,10 @@ class TicketController extends Controller
      */
     public function download(Booking $booking)
     {
-        // Ensure user can only download their own tickets
         if ($booking->user_id !== Auth::user()->id) {
             abort(403, 'Unauthorized access to ticket.');
         }
-        
+
         if (!in_array($booking->status, ['paid', 'confirmed', 'completed'])) {
             abort(404, 'Ticket not found or not yet confirmed.');
         }
@@ -58,7 +57,7 @@ class TicketController extends Controller
         }
 
         $pdfPath = storage_path('app/public/' . $booking->ticket_pdf_path);
-        
+
         if (!file_exists($pdfPath)) {
             $this->generatePDF($booking);
             $pdfPath = storage_path('app/public/' . $booking->ticket_pdf_path);
@@ -142,7 +141,7 @@ class TicketController extends Controller
     private function generatePDF(Booking $booking)
     {
         $qrPath = null;
-        
+
         // Handle QR code path for PDF
         if ($booking->ticket_qr_code_path) {
             $fullQrPath = storage_path('app/public/' . $booking->ticket_qr_code_path);
@@ -150,7 +149,7 @@ class TicketController extends Controller
                 $qrPath = $fullQrPath;
             }
         }
-        
+
         $data = [
             'booking' => $booking,
             'event' => $booking->event,
@@ -166,14 +165,14 @@ class TicketController extends Controller
                       'isRemoteEnabled' => true,
                       'isHtml5ParserEnabled' => true
                   ]);
-        
+
         $filename = "boarding-pass_{$booking->booking_code}.pdf";
         $path = "tickets/" . $filename;
-        
+
         Storage::disk('public')->put($path, $pdf->output());
-        
+
         $booking->update(['ticket_pdf_path' => $path]);
-        
+
         return $path;
     }
 
@@ -194,7 +193,7 @@ class TicketController extends Controller
         if ($booking->user_id !== Auth::user()->id) {
             abort(403, 'Unauthorized access to ticket.');
         }
-        
+
         if (!in_array($booking->status, ['paid', 'confirmed', 'completed'])) {
             return back()->with('error', 'Ticket QR can only be generated for confirmed bookings.');
         }
@@ -202,7 +201,7 @@ class TicketController extends Controller
         try {
             // Generate QR code using booking service
             $this->bookingService->generateTicketQR($booking);
-            
+
             return back()->with('success', 'QR Code generated successfully!');
         } catch (Exception $e) {
             return back()->with('error', 'Failed to generate QR code: ' . $e->getMessage());

@@ -6,6 +6,7 @@ use App\Filament\Resources\TicketsResource\Pages\CreateTickets;
 use App\Filament\Resources\TicketsResource\Pages\EditTickets;
 use App\Filament\Resources\TicketsResource\Pages\ListTickets;
 use Filament\Forms\Form;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -36,7 +37,6 @@ class TicketsResource extends Resource
         return $form
             ->components([
                 Section::make('Detail Tiket & Peserta')
-                    ->columns(2)
                     ->schema([
                         Select::make('booking_id')
                             ->label('Kode Booking')
@@ -47,34 +47,21 @@ class TicketsResource extends Resource
                             ->label('Kode Tiket')
                             ->default('TICKET-' . Str::upper(Str::random(10)))
                             ->required(),
-                        TextInput::make('attendee_name')
-                            ->label('Nama Peserta')
-                            ->required(),
-                        TextInput::make('attendee_email')
-                            ->label('Email Peserta')
-                            ->email(),
-                        TextInput::make('attendee_phone')
-                            ->label('Telepon Peserta')
-                            ->tel(),
-                        TextInput::make('seat_number')
-                            ->label('Nomor Kursi'),
-                        Textarea::make('special_requirements')
-                            ->label('Permintaan Khusus')
-                            ->columnSpanFull(),
-                    ]),
-                Section::make('Status Check-in')
-                    ->schema([
-                        Toggle::make('is_checked_in')
-                            ->label('Sudah Check-in?')
-                            ->live(),
-                        DateTimePicker::make('checked_in_at')
-                            ->label('Waktu Check-in')
-                            ->visible(fn (Get $get) => $get('is_checked_in')),
-                        Select::make('checked_in_by')
-                            ->label('Di-Check-in oleh')
-                            ->relationship('checkedInBy', 'name')
-                            ->visible(fn (Get $get) => $get('is_checked_in')),
-                    ])
+                        Grid::make(3)
+                            ->schema([
+                                TextInput::make('attendee_name')
+                                    ->label('Nama Peserta')
+                                    ->required(),
+                                TextInput::make('attendee_email')
+                                    ->label('Email Peserta')
+                                    ->email(),
+                                TextInput::make('attendee_phone')
+                                    ->label('Telepon Peserta')
+                                    ->tel(),
+                            ])
+                        ->columnSpanFull(),
+                    ])->columns(2)
+                ->columnSpanFull()
             ]);
     }
 
@@ -106,7 +93,7 @@ class TicketsResource extends Resource
                 TextColumn::make('booking.status')
                     ->label('Status Booking')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'paid' => 'success',
                         'expired' => 'danger',
@@ -142,7 +129,7 @@ class TicketsResource extends Resource
         return [
             'index' => ListTickets::route('/'),
             'create' => CreateTickets::route('/create'),
-//            'edit' => EditTickets::route('/{record}/edit'),
+            'edit' => EditTickets::route('/{record}/edit'),
         ];
     }
 }
