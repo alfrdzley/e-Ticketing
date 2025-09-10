@@ -2,42 +2,42 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Pages\Page;
-use Filament\Pages\Concerns\InteractsWithHeaderActions;
-use Filament\Actions;
 use App\Models\User;
+use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\InteractsWithHeaderActions;
+use Filament\Pages\Page;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Actions\Action;
-use Filament\Forms\Components\Select;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class SuperAdminManagement extends Page implements HasForms, HasTable
 {
-    use InteractsWithHeaderActions;
     use InteractsWithForms;
+    use InteractsWithHeaderActions;
     use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
-    
+
     protected static string $view = 'filament.pages.super-admin-management';
-    
+
     protected static ?string $navigationLabel = 'Super Admin Management';
-    
+
     protected static ?string $title = 'Super Admin Management';
-    
+
     protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationGroup = 'Admin Management';
 
     public static function canAccess(): bool
     {
-        return Auth::check() && 
+        return Auth::check() &&
                (Auth::user()->hasRole('super_admin') || Auth::user()->is_admin);
     }
 
@@ -58,7 +58,7 @@ class SuperAdminManagement extends Page implements HasForms, HasTable
                     $user = User::find($data['user_id']);
                     $user->assignRole('super_admin');
                     $user->update(['is_admin' => true]);
-                    
+
                     Notification::make()
                         ->title('Super Admin Assigned')
                         ->body("User {$user->name} has been assigned as Super Admin")
@@ -99,7 +99,7 @@ class SuperAdminManagement extends Page implements HasForms, HasTable
                     ->action(function (User $record) {
                         $record->removeRole('super_admin');
                         $record->update(['is_admin' => false]);
-                        
+
                         Notification::make()
                             ->title('Super Admin Removed')
                             ->body("Super admin access removed from {$record->name}")

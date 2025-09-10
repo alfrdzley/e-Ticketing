@@ -13,26 +13,26 @@ class Transaction extends Model
     use HasUlids;
 
     protected $fillable = [
-        "booking_id",
-        "midtrans_order_id",
-        "quantity",
-        "total_price",
-        "status",
-        "payment_method",
-        "snap_token",
-        "paid_at",
-        "midtrans_response",
-        "transaction_id",
-        "fraud_status",
-        "payment_type",
-        "gross_amount",
+        'booking_id',
+        'midtrans_order_id',
+        'quantity',
+        'total_price',
+        'status',
+        'payment_method',
+        'snap_token',
+        'paid_at',
+        'midtrans_response',
+        'transaction_id',
+        'fraud_status',
+        'payment_type',
+        'gross_amount',
     ];
 
     protected $casts = [
-        "total_price" => "decimal:2",
-        "gross_amount" => "decimal:2",
-        "paid_at" => "datetime",
-        "midtrans_response" => "array",
+        'total_price' => 'decimal:2',
+        'gross_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
+        'midtrans_response' => 'array',
     ];
 
     protected static function boot(): void
@@ -42,14 +42,14 @@ class Transaction extends Model
         static::creating(function ($model) {
             if (empty($model->midtrans_order_id)) {
                 $model->midtrans_order_id =
-                    "TXN-" . strtoupper(Str::random(10));
+                    'TXN-'.strtoupper(Str::random(10));
             }
         });
     }
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class, "booking_id", "ulid");
+        return $this->belongsTo(Booking::class, 'booking_id', 'ulid');
     }
 
     public function user(): HasOneThrough
@@ -57,10 +57,10 @@ class Transaction extends Model
         return $this->hasOneThrough(
             User::class,
             Booking::class,
-            "ulid",
-            "id",
-            "booking_id",
-            "user_id",
+            'ulid',
+            'id',
+            'booking_id',
+            'user_id',
         );
     }
 
@@ -69,25 +69,25 @@ class Transaction extends Model
         return $this->hasOneThrough(
             Event::class,
             Booking::class,
-            "ulid",
-            "id",
-            "booking_id",
-            "event_id",
+            'ulid',
+            'id',
+            'booking_id',
+            'event_id',
         );
     }
 
     public function isPaid(): bool
     {
-        return $this->status === "paid";
+        return $this->status === 'paid';
     }
 
     public function isPending(): bool
     {
-        return $this->status === "pending";
+        return $this->status === 'pending';
     }
 
     public function isFailed(): bool
     {
-        return in_array($this->status, ["failed", "expired", "cancelled"]);
+        return in_array($this->status, ['failed', 'expired', 'cancelled']);
     }
 }

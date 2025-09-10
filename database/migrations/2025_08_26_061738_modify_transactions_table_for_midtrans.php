@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('transactions', function (Blueprint $table) {
             // Add booking_id column for relationship
             $table->char('booking_id', 26)->nullable()->after('id');
-            
+
             // Add Midtrans specific columns
             $table->string('midtrans_order_id')->unique()->nullable()->after('booking_id');
             $table->string('payment_method')->nullable()->after('status');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('fraud_status')->nullable()->after('transaction_id');
             $table->string('payment_type')->nullable()->after('fraud_status');
             $table->decimal('gross_amount', 15, 2)->nullable()->after('payment_type');
-            
+
             // Update total_price precision
             $table->decimal('total_price', 15, 2)->change();
         });
@@ -45,10 +45,10 @@ return new class extends Migration
         Schema::table('transactions', function (Blueprint $table) {
             // Update status column to enum
             $table->enum('status', ['pending', 'paid', 'failed', 'expired', 'cancelled'])->default('pending')->change();
-            
+
             // Add foreign key for booking
             $table->foreign('booking_id')->references('ulid')->on('bookings')->onDelete('cascade');
-            
+
             // Add index for midtrans_order_id
             $table->index('midtrans_order_id');
         });
@@ -62,11 +62,11 @@ return new class extends Migration
         Schema::table('transactions', function (Blueprint $table) {
             // Remove foreign key
             $table->dropForeign(['booking_id']);
-            
+
             // Remove Midtrans columns
             $table->dropColumn([
                 'booking_id',
-                'midtrans_order_id', 
+                'midtrans_order_id',
                 'payment_method',
                 'snap_token',
                 'paid_at',
@@ -74,19 +74,18 @@ return new class extends Migration
                 'transaction_id',
                 'fraud_status',
                 'payment_type',
-                'gross_amount'
             ]);
-            
+
             // Restore original columns
             $table->bigInteger('event_id')->unsigned()->after('id');
             $table->bigInteger('user_id')->unsigned()->after('event_id');
-            
+
             // Restore original status
             $table->string('status')->default('pending')->change();
-            
+
             // Restore original total_price precision
             $table->decimal('total_price', 10, 2)->change();
-            
+
             // Restore foreign keys
             $table->foreign('event_id')->references('id')->on('events');
             $table->foreign('user_id')->references('id')->on('users');

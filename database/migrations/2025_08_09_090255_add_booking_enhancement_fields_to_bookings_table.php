@@ -29,7 +29,7 @@ return new class extends Migration
                 'ticket_qr_code_path',
                 'ticket_pdf_path',
                 'entry_validated_at',
-                'payment_proof_path'
+                'payment_proof_path',
             ]);
         });
     }

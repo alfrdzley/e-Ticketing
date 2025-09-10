@@ -28,10 +28,10 @@ return new class extends Migration
         Schema::table('events', function (Blueprint $table) {
             $table->dropColumn([
                 'payment_qr_code',
-                'payment_account_name', 
+                'payment_account_name',
                 'payment_account_number',
                 'payment_bank_name',
-                'payment_instructions'
+                'payment_instructions',
             ]);
         });
     }

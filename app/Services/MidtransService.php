@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\Booking;
+use App\Models\Transaction;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Midtrans\Transaction as MidtransTransaction;
-use App\Models\Transaction;
-use App\Models\Booking;
-use Illuminate\Support\Facades\Log;
-use Exception;
 
 class MidtransService
 {
@@ -49,7 +49,7 @@ class MidtransService
                         'quantity' => $transaction->quantity,
                         'name' => $event->name,
                         'category' => $event->category->name ?? 'Event',
-                    ]
+                    ],
                 ],
                 'callbacks' => [
                     'finish' => config('midtrans.finish_url'),
@@ -97,7 +97,7 @@ class MidtransService
                 'error' => $e->getMessage(),
             ]);
 
-            throw new Exception('Failed to create payment token: ' . $e->getMessage());
+            throw new Exception('Failed to create payment token: '.$e->getMessage());
         }
     }
 
@@ -105,10 +105,10 @@ class MidtransService
     {
         try {
             $status = MidtransTransaction::status($orderId);
-            
+
             // Convert object to array if needed
             $statusArray = is_object($status) ? json_decode(json_encode($status), true) : $status;
-            
+
             Log::info('Transaction status retrieved', [
                 'order_id' => $orderId,
                 'status' => $statusArray['transaction_status'] ?? 'unknown',
@@ -122,7 +122,7 @@ class MidtransService
                 'error' => $e->getMessage(),
             ]);
 
-            throw new Exception('Failed to get transaction status: ' . $e->getMessage());
+            throw new Exception('Failed to get transaction status: '.$e->getMessage());
         }
     }
 
@@ -146,7 +146,7 @@ class MidtransService
 
             $transaction = Transaction::where('midtrans_order_id', $orderId)->first();
 
-            if (!$transaction) {
+            if (! $transaction) {
                 Log::error("Transaction not found for order ID: {$orderId}");
                 throw new Exception("Transaction not found for order ID: {$orderId}");
             }
@@ -159,13 +159,13 @@ class MidtransService
 
             // Update transaction based on status
             $newStatus = $this->mapMidtransStatus($transactionStatus, $fraudStatus);
-            
+
             Log::info('Status mapping', [
                 'midtrans_status' => $transactionStatus,
                 'fraud_status' => $fraudStatus,
                 'mapped_status' => $newStatus,
             ]);
-            
+
             $updateData = [
                 'status' => $newStatus,
                 'payment_type' => $paymentType,
@@ -251,7 +251,7 @@ class MidtransService
     {
         try {
             MidtransTransaction::cancel($orderId);
-            
+
             Log::info('Transaction cancelled via Midtrans', [
                 'order_id' => $orderId,
             ]);

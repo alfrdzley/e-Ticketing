@@ -11,7 +11,7 @@ class CheckinLog extends Model
 
     protected $fillable = [
         'ticket_id', 'action', 'performed_by', 'performed_at',
-        'location', 'device_info', 'ip_address', 'notes'
+        'location', 'device_info', 'ip_address', 'notes',
     ];
 
     protected $casts = [

@@ -5,15 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TicketsResource\Pages\CreateTickets;
 use App\Filament\Resources\TicketsResource\Pages\EditTickets;
 use App\Filament\Resources\TicketsResource\Pages\ListTickets;
-use Filament\Forms\Form;
+use App\Models\Ticket;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Get;
-use App\Models\Ticket;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -29,6 +26,7 @@ class TicketsResource extends Resource
     protected static bool $shouldRegisterNavigation = true;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -36,7 +34,6 @@ class TicketsResource extends Resource
         return $form
             ->components([
                 Section::make('Detail Tiket & Peserta')
-                    ->columns(2)
                     ->schema([
                         Select::make('booking_id')
                             ->label('Kode Booking')
@@ -45,36 +42,23 @@ class TicketsResource extends Resource
                             ->required(),
                         TextInput::make('ticket_code')
                             ->label('Kode Tiket')
-                            ->default('TICKET-' . Str::upper(Str::random(10)))
+                            ->default('TICKET-'.Str::upper(Str::random(10)))
                             ->required(),
-                        TextInput::make('attendee_name')
-                            ->label('Nama Peserta')
-                            ->required(),
-                        TextInput::make('attendee_email')
-                            ->label('Email Peserta')
-                            ->email(),
-                        TextInput::make('attendee_phone')
-                            ->label('Telepon Peserta')
-                            ->tel(),
-                        TextInput::make('seat_number')
-                            ->label('Nomor Kursi'),
-                        Textarea::make('special_requirements')
-                            ->label('Permintaan Khusus')
+                        Grid::make(3)
+                            ->schema([
+                                TextInput::make('attendee_name')
+                                    ->label('Nama Peserta')
+                                    ->required(),
+                                TextInput::make('attendee_email')
+                                    ->label('Email Peserta')
+                                    ->email(),
+                                TextInput::make('attendee_phone')
+                                    ->label('Telepon Peserta')
+                                    ->tel(),
+                            ])
                             ->columnSpanFull(),
-                    ]),
-                Section::make('Status Check-in')
-                    ->schema([
-                        Toggle::make('is_checked_in')
-                            ->label('Sudah Check-in?')
-                            ->live(),
-                        DateTimePicker::make('checked_in_at')
-                            ->label('Waktu Check-in')
-                            ->visible(fn (Get $get) => $get('is_checked_in')),
-                        Select::make('checked_in_by')
-                            ->label('Di-Check-in oleh')
-                            ->relationship('checkedInBy', 'name')
-                            ->visible(fn (Get $get) => $get('is_checked_in')),
-                    ])
+                    ])->columns(2)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -142,7 +126,7 @@ class TicketsResource extends Resource
         return [
             'index' => ListTickets::route('/'),
             'create' => CreateTickets::route('/create'),
-//            'edit' => EditTickets::route('/{record}/edit'),
+            'edit' => EditTickets::route('/{record}/edit'),
         ];
     }
 }

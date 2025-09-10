@@ -24,7 +24,7 @@ class EventFactory extends Factory
             'description' => $this->faker->paragraph(5),
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'location' => $this->faker->city . ' Convention Hall',
+            'location' => $this->faker->city.' Convention Hall',
             'address' => $this->faker->address,
             'price' => $this->faker->randomElement([50000, 75000, 100000, 150000, 200000]),
             'quota' => $this->faker->numberBetween(100, 500),
@@ -34,4 +34,3 @@ class EventFactory extends Factory
         ];
     }
 }
-

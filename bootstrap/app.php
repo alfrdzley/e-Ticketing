@@ -22,10 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'Authentication required.',
-                    'error' => 'Unauthenticated'
+                    'error' => 'Unauthenticated',
                 ], 401);
             }
-            
+
             // Redirect to auth fallback page
             return redirect()->route('auth.fallback')
                 ->with('message', 'Please log in to access this resource.');
@@ -36,10 +36,10 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'You do not have permission to access this resource.',
-                    'error' => 'Forbidden'
+                    'error' => 'Forbidden',
                 ], 403);
             }
-            
+
             return response()->view('errors.403', ['exception' => $e], 403);
         });
 
@@ -48,10 +48,10 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'Session expired. Please refresh and try again.',
-                    'error' => 'Session Expired'
+                    'error' => 'Session Expired',
                 ], 419);
             }
-            
+
             return response()->view('errors.419', ['exception' => $e], 419);
         });
 
@@ -60,29 +60,29 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'The requested resource was not found.',
-                    'error' => 'Not Found'
+                    'error' => 'Not Found',
                 ], 404);
             }
-            
+
             return response()->view('errors.404', ['exception' => $e], 404);
         });
 
         // Handle 500 errors
         $exceptions->render(function (\Throwable $e, $request) {
             // Only handle if it's a 500 error and not already handled
-            if (!config('app.debug') && !$request->expectsJson()) {
+            if (! config('app.debug') && ! $request->expectsJson()) {
                 $statusCode = 500;
-                
+
                 // Check if exception has status code method
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
                     $statusCode = $e->getStatusCode();
                 }
-                
+
                 if ($statusCode >= 500) {
                     return response()->view('errors.500', ['exception' => $e], $statusCode);
                 }
             }
-            
+
             return null; // Let Laravel handle other cases
         });
     })->create();

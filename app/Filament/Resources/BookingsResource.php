@@ -2,21 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms\Form;
-use Filament\Forms\Components\Section;
-use App\Models\Event;
-use App\Filament\Resources\BookingsResource\Pages\ListBookings;
 use App\Filament\Resources\BookingsResource\Pages\CreateBookings;
 use App\Filament\Resources\BookingsResource\Pages\EditBookings;
+use App\Filament\Resources\BookingsResource\Pages\ListBookings;
 use App\Models\Booking;
+use App\Models\Event;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-
 
 class BookingsResource extends Resource
 {
@@ -43,7 +42,7 @@ class BookingsResource extends Resource
                         TextInput::make('booking_code')
                             ->label('Kode Booking')
                             ->disabled()
-                            ->default(fn() => 'BOOK-' . strtoupper(uniqid())),
+                            ->default(fn () => 'BOOK-'.strtoupper(uniqid())),
 
                         Select::make('user_id')
                             ->label('User')
@@ -209,7 +208,7 @@ class BookingsResource extends Resource
                     ->counts('tickets')
                     ->sortable()
                     ->badge()
-                    ->color(fn($record) => $record->tickets_count === $record->quantity ? 'success' : 'warning'),
+                    ->color(fn ($record) => $record->tickets_count === $record->quantity ? 'success' : 'warning'),
 
                 TextColumn::make('total_amount')
                     ->label('Total')
@@ -224,7 +223,7 @@ class BookingsResource extends Resource
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
                         'paid' => 'success',
                         'confirmed' => 'success',

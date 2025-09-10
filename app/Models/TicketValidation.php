@@ -9,10 +9,10 @@ class TicketValidation extends Model
 {
     protected $fillable = [
         'booking_id',
-        'validated_at', 
+        'validated_at',
         'validated_by',
         'entry_gate',
-        'validation_notes'
+        'validation_notes',
     ];
 
     protected $casts = [

@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Exception;
 use App\Models\Booking;
 use App\Services\BookingService;
+use Exception;
 use Illuminate\Console\Command;
 
 class GenerateTicketsForExistingBookings extends Command
@@ -43,19 +43,20 @@ class GenerateTicketsForExistingBookings extends Command
 
         if ($bookingsWithoutTickets->isEmpty()) {
             $this->info('No bookings found without tickets.');
+
             return;
         }
 
         $count = 0;
         foreach ($bookingsWithoutTickets as $booking) {
             $this->info("Generating tickets for booking: {$booking->booking_code}");
-            
+
             try {
                 $this->bookingService->generateTickets($booking);
                 $count++;
                 $this->line("✓ Generated {$booking->quantity} ticket(s) for {$booking->booking_code}");
             } catch (Exception $e) {
-                $this->error("✗ Failed to generate tickets for {$booking->booking_code}: " . $e->getMessage());
+                $this->error("✗ Failed to generate tickets for {$booking->booking_code}: ".$e->getMessage());
             }
         }
 

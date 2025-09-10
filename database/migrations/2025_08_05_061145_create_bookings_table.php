@@ -48,7 +48,7 @@ return new class extends Migration
             // Foreign keys
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-//            $table->foreign('discount_code_id')->references('id')->on('discount_codes')->onDelete('set null');
+            //            $table->foreign('discount_code_id')->references('id')->on('discount_codes')->onDelete('set null');
         });
     }
 
