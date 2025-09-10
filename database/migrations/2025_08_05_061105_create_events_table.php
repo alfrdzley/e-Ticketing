@@ -43,8 +43,8 @@ return new class extends Migration
             $table->index('organizer_id');
 
             // Foreign keys (optional - can be enabled later)
-//             $table->foreign('category_id')->references('id')->on('event_categories')->onDelete('set null');
-//             $table->foreign('organizer_id')->references('id')->on('users')->onDelete('set null');
+            //             $table->foreign('category_id')->references('id')->on('event_categories')->onDelete('set null');
+            //             $table->foreign('organizer_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

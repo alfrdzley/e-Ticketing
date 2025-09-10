@@ -13,7 +13,7 @@ class Ticket extends Model
     protected $fillable = [
         'booking_id', 'ticket_code', 'attendee_name', 'attendee_email',
         'attendee_phone', 'seat_number', 'special_requirements',
-        'is_checked_in', 'checked_in_at', 'checked_in_by', 'ulid'
+        'is_checked_in', 'checked_in_at', 'checked_in_by', 'ulid',
     ];
 
     protected $casts = [
@@ -24,7 +24,7 @@ class Ticket extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($model) {
             if (empty($model->ulid)) {
                 $model->ulid = (string) Str::ulid();
@@ -51,5 +51,4 @@ class Ticket extends Model
     {
         return $this->belongsTo(User::class, 'checked_in_by');
     }
-
 }

@@ -13,7 +13,7 @@ class EventCategoryFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->randomElement(['Technology', 'Music', 'Sports', 'Education', 'Business', 'Arts', 'Food & Drinks', 'Health']);
-        
+
         return [
             'name' => $name,
             'slug' => Str::slug($name),

@@ -6,14 +6,15 @@ use App\Models\Booking;
 use App\Models\Transaction;
 use App\Services\CheckoutService;
 use App\Services\MidtransService;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
 {
     protected $checkoutService;
+
     protected $midtransService;
 
     public function __construct(CheckoutService $checkoutService, MidtransService $midtransService)
@@ -51,7 +52,7 @@ class PaymentController extends Controller
     {
         try {
             $notification = $request->all();
-            
+
             Log::info('Midtrans notification received', $notification);
 
             $transaction = $this->midtransService->handleNotification($notification);
@@ -113,35 +114,35 @@ class PaymentController extends Controller
 
         $transaction = Transaction::where('midtrans_order_id', $orderId)->first();
 
-        if (!$transaction) {
+        if (! $transaction) {
             return redirect()->route('events.index')->with('error', 'Transaction not found');
         }
 
         // Try to get latest status from Midtrans and update if needed
         try {
             $midtransStatus = $this->midtransService->getTransactionStatus($orderId);
-            
+
             // Update status based on latest Midtrans response
             if (isset($midtransStatus['transaction_status'])) {
                 $latestStatus = $this->midtransService->mapMidtransStatusPublic(
-                    $midtransStatus['transaction_status'], 
+                    $midtransStatus['transaction_status'],
                     $midtransStatus['fraud_status'] ?? null
                 );
-                
+
                 if ($latestStatus === 'paid' && $transaction->status !== 'paid') {
                     $transaction->update(['status' => 'paid', 'paid_at' => now()]);
                     $transaction->booking->update(['status' => 'paid']);
-                    
+
                     Log::info('Updated transaction status on finish callback', [
                         'transaction_id' => $transaction->id,
-                        'new_status' => 'paid'
+                        'new_status' => 'paid',
                     ]);
                 }
             }
         } catch (\Exception $e) {
             Log::warning('Failed to check Midtrans status on finish callback', [
                 'error' => $e->getMessage(),
-                'order_id' => $orderId
+                'order_id' => $orderId,
             ]);
         }
 

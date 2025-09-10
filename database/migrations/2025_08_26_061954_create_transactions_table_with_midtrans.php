@@ -30,7 +30,7 @@ return new class extends Migration
 
             // Foreign keys
             $table->foreign('booking_id')->references('ulid')->on('bookings')->onDelete('cascade');
-            
+
             // Indexes
             $table->index('midtrans_order_id');
             $table->index('status');

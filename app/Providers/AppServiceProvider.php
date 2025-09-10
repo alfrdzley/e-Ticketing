@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\TransactionRepository;
+use App\Repositories\TransactionRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,8 +18,8 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(TelescopeServiceProvider::class);
         }
         $this->app->bind(
-            \App\Repositories\TransactionRepositoryInterface::class,
-            \App\Repositories\TransactionRepository::class
+            TransactionRepositoryInterface::class,
+            TransactionRepository::class
         );
     }
 

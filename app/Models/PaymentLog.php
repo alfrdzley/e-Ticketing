@@ -11,7 +11,7 @@ class PaymentLog extends Model
 
     protected $fillable = [
         'booking_id', 'transaction_id', 'payment_method', 'amount',
-        'status', 'gateway_response', 'processed_at'
+        'status', 'gateway_response', 'processed_at',
     ];
 
     protected $casts = [

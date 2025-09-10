@@ -12,7 +12,7 @@ class DiscountCode extends Model
     protected $fillable = [
         'code', 'name', 'type', 'value', 'min_purchase', 'max_discount',
         'usage_limit', 'used_count', 'valid_from', 'valid_until',
-        'applicable_events', 'is_active'
+        'applicable_events', 'is_active',
     ];
 
     protected $casts = [

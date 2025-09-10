@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Transaction;
 use App\Models\Booking;
-use App\Services\MidtransService;
+use App\Models\Transaction;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class CheckoutService
 {
@@ -23,7 +22,7 @@ class CheckoutService
         try {
             return DB::transaction(function () use ($booking) {
                 // Validate booking
-                if (!$booking->event) {
+                if (! $booking->event) {
                     throw new Exception('Event not found for this booking');
                 }
 
@@ -36,7 +35,7 @@ class CheckoutService
 
                 // Validate amount
                 if ($totalPrice <= 0) {
-                    throw new Exception('Invalid booking amount: ' . $totalPrice);
+                    throw new Exception('Invalid booking amount: '.$totalPrice);
                 }
 
                 // Create transaction
@@ -65,7 +64,7 @@ class CheckoutService
                 'error' => $e->getMessage(),
             ]);
 
-            throw new Exception('Checkout failed: ' . $e->getMessage());
+            throw new Exception('Checkout failed: '.$e->getMessage());
         }
     }
 
@@ -74,10 +73,10 @@ class CheckoutService
         try {
             // Legacy method for backward compatibility
             // This handles the old checkout process with direct data
-            
+
             $booking = Booking::where('ulid', $data['booking_id'] ?? null)->first();
-            
-            if (!$booking) {
+
+            if (! $booking) {
                 throw new Exception('Booking not found');
             }
 
@@ -89,7 +88,7 @@ class CheckoutService
                 'error' => $e->getMessage(),
             ]);
 
-            throw new Exception('Checkout failed: ' . $e->getMessage());
+            throw new Exception('Checkout failed: '.$e->getMessage());
         }
     }
 }
