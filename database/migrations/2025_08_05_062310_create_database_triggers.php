@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
@@ -15,7 +13,7 @@ return new class extends Migration
         // Note: Laravel doesn't have native support for triggers in migrations
         // These need to be executed as raw DB statements
         // Skip triggers for SQLite (testing environment)
-        
+
         if (DB::getDriverName() === 'sqlite') {
             return;
         }
@@ -67,7 +65,7 @@ return new class extends Migration
         if (DB::getDriverName() === 'sqlite') {
             return;
         }
-        
+
         DB::unprepared('DROP TRIGGER IF EXISTS generate_booking_code');
         DB::unprepared('DROP TRIGGER IF EXISTS update_discount_usage');
         DB::unprepared('DROP TRIGGER IF EXISTS generate_ticket_code');

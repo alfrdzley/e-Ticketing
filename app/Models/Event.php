@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -18,7 +17,7 @@ class Event extends Model
         'terms_conditions', 'refund_policy', 'contact_email',
         'contact_phone', 'meta_title', 'meta_description',
         'payment_qr_code', 'payment_account_name', 'payment_account_number',
-        'payment_bank_name', 'payment_instructions', 'ulid'
+        'payment_bank_name', 'payment_instructions', 'ulid',
     ];
 
     protected $casts = [
@@ -30,7 +29,7 @@ class Event extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(callback: function ($model) {
             if (empty($model->ulid)) {
                 $model->ulid = (string) Str::ulid();

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return [
     /*
@@ -24,10 +24,10 @@ return [
     | URL untuk menerima notification dari Midtrans
     |
     */
-    'notification_url' => env('APP_URL') . '/payment/notification',
-    'finish_url' => env('APP_URL') . '/payment/finish',
-    'unfinish_url' => env('APP_URL') . '/payment/unfinish',
-    'error_url' => env('APP_URL') . '/payment/error',
+    'notification_url' => env('APP_URL').'/payment/notification',
+    'finish_url' => env('APP_URL').'/payment/finish',
+    'unfinish_url' => env('APP_URL').'/payment/unfinish',
+    'error_url' => env('APP_URL').'/payment/error',
 
     /*
     |--------------------------------------------------------------------------

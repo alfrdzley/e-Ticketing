@@ -2,17 +2,18 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\TextColumn;
 use App\Models\Event;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
 class UpcomingEventsWidget extends BaseWidget
 {
     protected static ?string $heading = 'Upcoming Events';
+
     protected static ?int $sort = 6;
-    protected int | string | array $columnSpan = 'full';
+
+    protected int|string|array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
@@ -59,15 +60,21 @@ class UpcomingEventsWidget extends BaseWidget
                     ->label('Availability')
                     ->state(function ($record) {
                         $available = $record->quota - $record->bookings_count;
-                        return $available . ' left';
+
+                        return $available.' left';
                     })
                     ->badge()
                     ->color(function ($record) {
                         $available = $record->quota - $record->bookings_count;
-                        if ($available <= 0) return 'danger';
-                        if ($available <= $record->quota * 0.2) return 'warning';
+                        if ($available <= 0) {
+                            return 'danger';
+                        }
+                        if ($available <= $record->quota * 0.2) {
+                            return 'warning';
+                        }
+
                         return 'success';
                     }),
-                ]);
+            ]);
     }
 }

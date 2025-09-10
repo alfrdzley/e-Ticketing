@@ -302,35 +302,35 @@
                 </div>
 
                 {{-- Upload Payment Proof --}}
-                <div class="mt-6">
-                    <h4 class="font-semibold text-gray-900 mb-4">Upload Payment Proof</h4>
-                    <form action="{{ route('bookings.upload-proof', $booking) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Payment Proof Image *</label>
-                            <input type="file" name="payment_proof" accept="image/*" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">Upload screenshot or photo of transfer receipt</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Transfer Reference (Optional)</label>
-                            <input type="text" name="payment_reference" placeholder="e.g., Transfer reference number"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Notes (Optional)</label>
-                            <textarea name="notes" rows="3" placeholder="Any additional notes..."
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
-                        </div>
-                        <button type="submit"
-                                class="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                            </svg>
-                            Upload Payment Proof
-                        </button>
-                    </form>
-                </div>
+{{--                <div class="mt-6">--}}
+{{--                    <h4 class="font-semibold text-gray-900 mb-4">Upload Payment Proof</h4>--}}
+{{--                    <form action="{{ route('bookings.upload-proof', $booking) }}" method="POST" enctype="multipart/form-data" class="space-y-4">--}}
+{{--                        @csrf--}}
+{{--                        <div>--}}
+{{--                            <label class="block text-sm font-medium text-gray-700 mb-2">Payment Proof Image *</label>--}}
+{{--                            <input type="file" name="payment_proof" accept="image/*" required--}}
+{{--                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">--}}
+{{--                            <p class="text-xs text-gray-500 mt-1">Upload screenshot or photo of transfer receipt</p>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <label class="block text-sm font-medium text-gray-700 mb-2">Transfer Reference (Optional)</label>--}}
+{{--                            <input type="text" name="payment_reference" placeholder="e.g., Transfer reference number"--}}
+{{--                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <label class="block text-sm font-medium text-gray-700 mb-2">Notes (Optional)</label>--}}
+{{--                            <textarea name="notes" rows="3" placeholder="Any additional notes..."--}}
+{{--                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>--}}
+{{--                        </div>--}}
+{{--                        <button type="submit"--}}
+{{--                                class="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 flex items-center justify-center">--}}
+{{--                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">--}}
+{{--                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>--}}
+{{--                            </svg>--}}
+{{--                            Upload Payment Proof--}}
+{{--                        </button>--}}
+{{--                    </form>--}}
+{{--                </div>--}}
             </div>
         </div>
 

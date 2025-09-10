@@ -5,16 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TicketsResource\Pages\CreateTickets;
 use App\Filament\Resources\TicketsResource\Pages\EditTickets;
 use App\Filament\Resources\TicketsResource\Pages\ListTickets;
-use Filament\Forms\Form;
+use App\Models\Ticket;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Get;
-use App\Models\Ticket;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -30,6 +26,7 @@ class TicketsResource extends Resource
     protected static bool $shouldRegisterNavigation = true;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -45,7 +42,7 @@ class TicketsResource extends Resource
                             ->required(),
                         TextInput::make('ticket_code')
                             ->label('Kode Tiket')
-                            ->default('TICKET-' . Str::upper(Str::random(10)))
+                            ->default('TICKET-'.Str::upper(Str::random(10)))
                             ->required(),
                         Grid::make(3)
                             ->schema([
@@ -59,9 +56,9 @@ class TicketsResource extends Resource
                                     ->label('Telepon Peserta')
                                     ->tel(),
                             ])
-                        ->columnSpanFull(),
+                            ->columnSpanFull(),
                     ])->columns(2)
-                ->columnSpanFull()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -93,7 +90,7 @@ class TicketsResource extends Resource
                 TextColumn::make('booking.status')
                     ->label('Status Booking')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
                         'paid' => 'success',
                         'expired' => 'danger',

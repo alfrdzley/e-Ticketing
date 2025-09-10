@@ -84,7 +84,7 @@ return new class extends Migration
                 'transaction_id',
                 'fraud_status',
                 'payment_type',
-                'gross_amount'
+                'gross_amount',
             ]);
         });
 

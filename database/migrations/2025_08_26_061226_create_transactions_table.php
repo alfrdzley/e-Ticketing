@@ -30,7 +30,7 @@ return new class extends Migration
 
             // Foreign key constraints
             $table->foreign('booking_id')->references('ulid')->on('bookings')->onDelete('cascade');
-            
+
             // Indexes
             $table->index('booking_id');
             $table->index('status');

@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unique('ulid');
             $table->index('ulid');
         });
-        
+
         Schema::table('bookings', function (Blueprint $table) {
             $table->unique('ulid');
             $table->index('ulid');
         });
-        
+
         Schema::table('tickets', function (Blueprint $table) {
             $table->unique('ulid');
             $table->index('ulid');
@@ -37,12 +37,12 @@ return new class extends Migration
             $table->dropIndex(['ulid']);
             $table->dropUnique(['ulid']);
         });
-        
+
         Schema::table('bookings', function (Blueprint $table) {
             $table->dropIndex(['ulid']);
             $table->dropUnique(['ulid']);
         });
-        
+
         Schema::table('tickets', function (Blueprint $table) {
             $table->dropIndex(['ulid']);
             $table->dropUnique(['ulid']);

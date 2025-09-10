@@ -28,88 +28,88 @@ class GenerateUlidsForExistingRecords extends Command
     public function handle()
     {
         $this->info('Starting ULID generation for existing records...');
-        
+
         // Generate ULIDs for Events
         $this->generateForEvents();
-        
+
         // Generate ULIDs for Bookings
         $this->generateForBookings();
-        
+
         // Generate ULIDs for Tickets
         $this->generateForTickets();
-        
+
         $this->info('ULID generation completed successfully!');
     }
-    
+
     private function generateForEvents()
     {
         $this->info('Generating ULIDs for Events...');
-        
+
         $query = DB::table('events');
-        if (!$this->option('force')) {
-            $query->where(function($q) {
+        if (! $this->option('force')) {
+            $query->where(function ($q) {
                 $q->whereNull('ulid')->orWhere('ulid', '');
             });
         }
-        
+
         $events = $query->get();
         $count = 0;
-        
+
         foreach ($events as $event) {
             DB::table('events')
                 ->where('id', $event->id)
                 ->update(['ulid' => (string) Str::ulid()]);
             $count++;
         }
-        
+
         $this->info("Generated ULIDs for {$count} events.");
     }
-    
+
     private function generateForBookings()
     {
         $this->info('Generating ULIDs for Bookings...');
-        
+
         $query = DB::table('bookings');
-        if (!$this->option('force')) {
-            $query->where(function($q) {
+        if (! $this->option('force')) {
+            $query->where(function ($q) {
                 $q->whereNull('ulid')->orWhere('ulid', '');
             });
         }
-        
+
         $bookings = $query->get();
         $count = 0;
-        
+
         foreach ($bookings as $booking) {
             DB::table('bookings')
                 ->where('id', $booking->id)
                 ->update(['ulid' => (string) Str::ulid()]);
             $count++;
         }
-        
+
         $this->info("Generated ULIDs for {$count} bookings.");
     }
-    
+
     private function generateForTickets()
     {
         $this->info('Generating ULIDs for Tickets...');
-        
+
         $query = DB::table('tickets');
-        if (!$this->option('force')) {
-            $query->where(function($q) {
+        if (! $this->option('force')) {
+            $query->where(function ($q) {
                 $q->whereNull('ulid')->orWhere('ulid', '');
             });
         }
-        
+
         $tickets = $query->get();
         $count = 0;
-        
+
         foreach ($tickets as $ticket) {
             DB::table('tickets')
                 ->where('id', $ticket->id)
                 ->update(['ulid' => (string) Str::ulid()]);
             $count++;
         }
-        
+
         $this->info("Generated ULIDs for {$count} tickets.");
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use Exception;
 use App\Models\Booking;
 use App\Models\Event;
 use App\Models\Ticket;
+use Exception;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class BookingService
 {
@@ -24,13 +23,13 @@ class BookingService
     public function createBooking(Event $event, array $bookingData): Booking
     {
         // Validate quota
-        if (!$event->hasAvailableQuota($bookingData['quantity'])) {
+        if (! $event->hasAvailableQuota($bookingData['quantity'])) {
             throw new Exception('Not enough quota available');
         }
 
         // Calculate pricing
         $pricing = $this->calculateTotal($event, $bookingData['quantity'], $bookingData['discount_code'] ?? null);
-        
+
         // Generate unique booking code
         $bookingCode = $this->generateBookingCode();
 
@@ -133,7 +132,7 @@ class BookingService
         // Generate tickets based on quantity
         for ($i = 1; $i <= $booking->quantity; $i++) {
             $ticketCode = $this->generateTicketCode();
-            
+
             Ticket::create([
                 'ticket_code' => $ticketCode,
                 'booking_id' => $booking->id,
@@ -158,7 +157,7 @@ class BookingService
     private function generateTicketCode(): string
     {
         do {
-            $code = 'TICKET-' . strtoupper(Str::random(10));
+            $code = 'TICKET-'.strtoupper(Str::random(10));
         } while (Ticket::where('ticket_code', $code)->exists());
 
         return $code;
@@ -171,6 +170,7 @@ class BookingService
     {
         if ($booking->status === 'pending') {
             $booking->update(['status' => 'expired']);
+
             return true;
         }
 
@@ -183,9 +183,9 @@ class BookingService
     public function generateTicketQR(Booking $booking): string
     {
         $qrPath = $this->qrService->generateTicketQR($booking->booking_code, $booking->event_id);
-        
+
         $booking->update(['ticket_qr_code_path' => $qrPath]);
-        
+
         return $qrPath;
     }
 
@@ -195,7 +195,7 @@ class BookingService
     private function generateBookingCode(): string
     {
         do {
-            $code = 'BK' . date('ymd') . strtoupper(Str::random(6));
+            $code = 'BK'.date('ymd').strtoupper(Str::random(6));
         } while (Booking::where('booking_code', $code)->exists());
 
         return $code;
@@ -204,11 +204,11 @@ class BookingService
     /**
      * Validate ticket for entry
      */
-    public function validateTicket(string $bookingCode, string $validatedBy = null, string $entryGate = null): bool
+    public function validateTicket(string $bookingCode, ?string $validatedBy = null, ?string $entryGate = null): bool
     {
         $booking = Booking::where('booking_code', $bookingCode)->first();
 
-        if (!$booking || !$booking->canBeValidated()) {
+        if (! $booking || ! $booking->canBeValidated()) {
             return false;
         }
 

@@ -6,11 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-
 class Booking extends Model
 {
-
     use HasFactory;
+
     protected $fillable = [
         'booking_code', 'user_id', 'event_id', 'quantity',
         'unit_price', 'total_amount', 'discount_amount', 'final_amount',
@@ -18,7 +17,7 @@ class Booking extends Model
         'booking_date', 'expired_at', 'notes', 'booker_name',
         'booker_email', 'booker_phone', 'discount_code_id',
         'ticket_qr_code_path', 'ticket_pdf_path', 'entry_validated_at',
-        'payment_proof_path', 'ulid'
+        'payment_proof_path', 'ulid',
     ];
 
     protected $casts = [
@@ -35,7 +34,7 @@ class Booking extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($model) {
             if (empty($model->ulid)) {
                 $model->ulid = (string) Str::ulid();
@@ -70,6 +69,7 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function event()
     {
         return $this->belongsTo(Event::class);
@@ -87,11 +87,11 @@ class Booking extends Model
 
     public function isValidated()
     {
-        return !is_null($this->entry_validated_at);
+        return ! is_null($this->entry_validated_at);
     }
 
     public function canBeValidated()
     {
-        return $this->status === 'paid' && !$this->isValidated();
+        return $this->status === 'paid' && ! $this->isValidated();
     }
 }

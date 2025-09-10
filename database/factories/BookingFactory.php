@@ -19,7 +19,7 @@ class BookingFactory extends Factory
         $totalAmount = $unitPrice * $quantity;
 
         return [
-            'booking_code' => 'BOOK-' . strtoupper(Str::random(8)),
+            'booking_code' => 'BOOK-'.strtoupper(Str::random(8)),
             'user_id' => User::factory(),
             'event_id' => Event::factory(),
             'quantity' => $quantity,
@@ -34,5 +34,3 @@ class BookingFactory extends Factory
         ];
     }
 }
-
-

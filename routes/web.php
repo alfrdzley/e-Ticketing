@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/events', 301);
+// Route::redirect('/', '/events', 301);
 
 // Midtrans payment routes (public endpoints)
 Route::prefix('payment')->name('payment.')->group(function () {
@@ -60,10 +60,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('payments')->name('payments.')->group(function () {
         Route::post('/{booking:ulid}/checkout', [PaymentController::class, 'checkout'])->name('checkout');
         Route::get('/{transaction:ulid}/status', [PaymentController::class, 'status'])->name('status');
-//        Route::get('/{booking:ulid}/instructions', [PaymentController::class, 'instructions'])->name('instructions');
-//        Route::post('/{booking:ulid}/upload-proof', [PaymentController::class, 'uploadProof'])->name('upload-proof');
-//        Route::post('/{booking:ulid}/verify', [PaymentController::class, 'verify'])->name('verify');
-//        Route::post('/events/{event:ulid}/generate-qr', [PaymentController::class, 'generateQR'])->name('generate-qr');
+        //        Route::get('/{booking:ulid}/instructions', [PaymentController::class, 'instructions'])->name('instructions');
+        //        Route::post('/{booking:ulid}/upload-proof', [PaymentController::class, 'uploadProof'])->name('upload-proof');
+        //        Route::post('/{booking:ulid}/verify', [PaymentController::class, 'verify'])->name('verify');
+        //        Route::post('/events/{event:ulid}/generate-qr', [PaymentController::class, 'generateQR'])->name('generate-qr');
     });
 
     // Ticket routes (require authentication)
@@ -77,14 +77,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/events/{event:ulid}/book', [BookingController::class, 'store'])->name('events.book');
 });
 
-Route::get('/api/user/{id}', function (string $id) {
+Route::get('/api/user/{username}', function (string $id) {
     return new UserResource(User::findOrFail($id));
 });
-Route::get('/api/event', function (){
-   return new \App\Http\Resources\EventResource(\App\Models\Event::find(1));
+
+//Route::get('/api/tickets', function () {
+//    return
+//}
+Route::get('/api/event', function () {
+    return new \App\Http\Resources\EventResource(\App\Models\Event::find(1));
 });
-
-
 
 Route::post('/tickets/validate', [TicketController::class, 'validateTicket'])->name('tickets.validate');
 
@@ -108,7 +110,7 @@ Route::fallback(function () {
     if (request()->expectsJson()) {
         return response()->json([
             'message' => 'The requested resource was not found.',
-            'error' => 'Not Found'
+            'error' => 'Not Found',
         ], 404);
     }
 
@@ -116,9 +118,9 @@ Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 // Include test routes in development
 if (app()->environment(['local', 'testing'])) {
-    require __DIR__ . '/test.php';
+    require __DIR__.'/test.php';
 }

@@ -2,21 +2,21 @@
 
 use App\Models\Booking;
 use App\Models\Event;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Services\CheckoutService;
 use App\Services\MidtransService;
-use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/test-payment', function (CheckoutService $checkoutService) {
     try {
         // Find or create a test booking
         $user = User::first();
         $event = Event::first();
-        
-        if (!$user || !$event) {
+
+        if (! $user || ! $event) {
             return response()->json(['error' => 'No user or event found for testing']);
         }
 
@@ -55,8 +55,8 @@ Route::get('/test-payment', function (CheckoutService $checkoutService) {
 // Test route untuk simulasi notification Midtrans
 Route::post('/test-midtrans-notification/{transaction}', function (Request $request, Transaction $transaction) {
     try {
-        $midtransService = new MidtransService();
-        
+        $midtransService = new MidtransService;
+
         // Simulasi notification data
         $notificationData = [
             'order_id' => $transaction->midtrans_order_id,
@@ -67,24 +67,24 @@ Route::post('/test-midtrans-notification/{transaction}', function (Request $requ
             'currency' => 'IDR',
             'fraud_status' => $request->get('fraud_status', 'accept'),
         ];
-        
+
         Log::info('Testing Midtrans notification', $notificationData);
-        
+
         $result = $midtransService->handleNotification($notificationData);
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Notification processed successfully',
             'transaction' => $result,
             'booking_status' => $result->booking->status,
         ]);
-        
+
     } catch (\Exception $e) {
         Log::error('Test notification failed', [
             'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
+            'trace' => $e->getTraceAsString(),
         ]);
-        
+
         return response()->json([
             'success' => false,
             'error' => $e->getMessage(),
